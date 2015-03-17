@@ -7,13 +7,13 @@ PACKAGE = $(PROJECT)-$(VERSION)
 SEND := ~/send
 
 ifndef TIZEN_IP
-TIZEN_IP=TizenNuc
+TIZEN_IP=TizenVTC
 endif
 
 wgtPkg: clean
 	cp -rf ../DNA_common .
 	zip -r $(PROJECT).wgt config.xml css icon.png index.html js DNA_common
-	
+
 config:
 	scp setup/weston.ini root@$(TIZEN_IP):/etc/xdg/weston/
 
@@ -22,11 +22,15 @@ $(PROJECT).wgt : dev
 wgt:
 	zip -r $(PROJECT).wgt $(WRT_FILES)
 
+debug: install;
+	ssh app@$(TIZEN_IP) "export DBUS_SESSION_BUS_ADDRESS='unix:path=/run/user/5000/dbus/user_bus_socket' && xwalkctl -d 9888"
+	ssh app@$(TIZEN_IP) "export DBUS_SESSION_BUS_ADDRESS='unix:path=/run/user/5000/dbus/user_bus_socket' && xwalkctl | egrep -e 'HelloTizen' | awk '{print $1}' | xargs --no-run-if-empty xwalk-launcher -d"
+
 run: install
-	ssh app@$(TIZEN_IP) "export DBUS_SESSION_BUS_ADDRESS='unix:path=/run/user/5000/dbus/user_bus_socket' && xwalkctl | egrep -e 'Hello Tizen' | awk '{print $1}' | xargs --no-run-if-empty xwalk-launcher -d"
+	ssh app@$(TIZEN_IP) "export DBUS_SESSION_BUS_ADDRESS='unix:path=/run/user/5000/dbus/user_bus_socket' && xwalkctl | egrep -e 'HelloTizen' | awk '{print $1}' | xargs --no-run-if-empty xwalk-launcher"
 
 install: deploy
-	ssh app@$(TIZEN_IP) "export DBUS_SESSION_BUS_ADDRESS='unix:path=/run/user/5000/dbus/user_bus_socket' && xwalkctl | egrep -e 'Hello Tizen' | awk '{print $1}' | xargs --no-run-if-empty xwalkctl -u"
+	ssh app@$(TIZEN_IP) "export DBUS_SESSION_BUS_ADDRESS='unix:path=/run/user/5000/dbus/user_bus_socket' && xwalkctl | egrep -e 'HelloTizen' | awk '{print $1}' | xargs --no-run-if-empty xwalkctl -u"
 	ssh app@$(TIZEN_IP) "export DBUS_SESSION_BUS_ADDRESS='unix:path=/run/user/5000/dbus/user_bus_socket' && xwalkctl -i /home/app/DNA_HelloTizen.wgt"
 
 $(PROJECT).wgt : wgt

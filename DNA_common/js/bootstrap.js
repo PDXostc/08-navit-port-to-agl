@@ -1,9 +1,17 @@
 /*
  * Copyright (c) 2014, Intel Corporation, Jaguar Land Rover
  *
- * This program is licensed under the terms and conditions of the
- * Apache License, version 2.0.  The full text of the Apache License is at
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
@@ -120,7 +128,7 @@ Bootstrap.prototype.initCarIndicators = function(callback) {
 	var self = this;
 
 	console.log("Loading CarIndicators object");
-
+/*
 	loadScript('./DNA_common/js/carIndicator.js', function(path, status) {
 		if (status === "ok") {
 			try {
@@ -143,7 +151,8 @@ Bootstrap.prototype.initCarIndicators = function(callback) {
 			console.log("Error occured during loading of Configuration", status);
 			callback(status);
 		}
-	});
+	});*/
+	self.initSpeech(callback);
 };
 /** 
  * This method initialize incoming call component and attaches to incoming call signal.
@@ -153,7 +162,8 @@ Bootstrap.prototype.initCarIndicators = function(callback) {
 Bootstrap.prototype.initIncomingCall = function(callback) {
 	"use strict";
 	var self = this;
-
+	callback();
+    /*  removed incomming call.
 	console.log("Loading IncomingCall object");
 	loadScript('./DNA_common/components/boxCaption/boxCaption.js', function(path, status) {
 		if (status === "ok") {
@@ -164,7 +174,7 @@ Bootstrap.prototype.initIncomingCall = function(callback) {
 						self.incomingCall = new IncomingCall();
 						if (typeof(tizen) !== 'undefined' && tizen.phone) {
 							tizen.phone.addCallChangedListener(function(result) {
-								/* global getAppByID */
+								// global getAppByID 
 								var appId = getAppByID('intelPoc15.phone');
 
 								var contact;
@@ -173,9 +183,9 @@ Bootstrap.prototype.initIncomingCall = function(callback) {
 								} else {
 									contact = {
 										phoneNumbers: [{
-											/* jshint camelcase: false */
+											// jshint camelcase: false 
 											number: tizen.phone.activeCall.line_id
-											/* jshint camelcase: true */
+											// jshint camelcase: true
 										}]
 
 									};
@@ -195,7 +205,7 @@ Bootstrap.prototype.initIncomingCall = function(callback) {
 										break;
 									case "DIALING".toLowerCase():
 										if (!appId.running) {
-											/*global launchApplication*/
+											//global launchApplication
 											launchApplication('intelPoc15.phone');
 										}
 										break;
@@ -216,7 +226,7 @@ Bootstrap.prototype.initIncomingCall = function(callback) {
 				}
 			});
 		}
-	});
+	});*/
 };
 /** 
  * This method initialize speech functionality.
@@ -226,11 +236,13 @@ Bootstrap.prototype.initIncomingCall = function(callback) {
 Bootstrap.prototype.initSpeech = function(callback) {
 	"use strict";
 	var self = this;
+	/*
 	loadScript('./DNA_common/js/speech.js', function(path, status) {
 		Speech.readCurrentAppName();
 		self.reload();
 		self.initIncomingCall(callback);
-	});
+	});*/
+	self.initIncomingCall(callback);
 };
 
 /** 
